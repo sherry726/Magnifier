@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>京东商品放大镜</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#show{
+			width: 400px;
+			height: 400px;
+			border:1px solid #ccc;
+			margin: 100px 80px;
+			position: relative;
+		}
+		#small{
+			width: 400px;
+			height: 400px;
+		}
+		#small>img{
+			width: 100%;
+		}
+		#big{
+			width: 400px;
+			height: 400px;
+			position: absolute;
+			left: 420px;
+			top: -1px;
+			border:1px solid #ccc;
+			overflow: hidden;
+			display: none;
+		}
+		#move{
+			/*最后计算滑块的大小*/
+			width: 160px;
+			height: 160px;
+			background: rgba(255, 242, 0, 0.5);
+			position: absolute;
+			left: 0;
+			top: 0;
+			cursor: move;
+			display: none;
+		}
+		#bigPic{
+			position: absolute;
+		}
+		#list{
+			margin-top: 5px;
+			width: 402px;
+			height: 104px;
+		}
+		#list>ul{
+			width: 100%;
+			height: 100%;
+		}
+		li{
+			list-style: none;
+			width: 100px;
+			float: left;
+
+		}
+		#list>ul>li>img{
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="show">
+		<!--定义小图区域-->
+		<div id="small">
+			<img id="smallPic" src="./images/2.jpg" alt="">
+		</div>
+		<!--定义大图区域-->
+		<div id="big">
+			<img  id="bigPic" src="./images/2.jpg">
+		</div>
+		<!--定义滑块-->
+		<div id="move"></div>
+
+		<!--定义商品列表-->
+		<div id="list">
+			<ul>
+				<li><img src="./images/2.jpg" alt=""></li>
+				<li><img src="./images/3.jpg" alt=""></li>
+				<li><img src="./images/4.jpg" alt=""></li>
+				<li><img src="./images/5.jpg" alt=""></li>
+			</ul>
+		</div>
+	</div>
+</body>
+<script>
+	//获取元素
+	var show = document.getElementById('show');
+	var move = document.getElementById('move');
+	var small = document.getElementById('small');
+	var big = document.getElementById('big');
+	var smallPic = document.getElementById('smallPic');
+	var bigPic = document.getElementById('bigPic');
+	var list = document.getElementById('list');
+	var imgUrls = list.getElementsByTagName('img');
+
+
+	small.onmouseover = function(){
+		//鼠标移入时显示滑块和大图区域
+		move.style.display = 'block';
+		big.style.display = 'block';
+	}
+	move.onmouseout = function(){
+		//鼠标移出时隐藏滑块和大图区域
+		move.style.display = 'none';
+		big.style.display = 'none';
+	}
+	//设置滑块跟随鼠标移动
+	small.onmousemove = function(e){
+		var newLeft = e.pageX - move.offsetWidth / 2 - show.offsetLeft;
+		var newTop = e.pageY - move.offsetHeight / 2 - show.offsetTop;
+
+		//水平方向滑块的临界点判断
+		if(newLeft <= 0){
+			newLeft = 0;
+		}
+		if(newLeft >= small.offsetWidth - move.offsetWidth){
+			newLeft = small.offsetWidth - move.offsetWidth
+		}
+		//垂直方向滑块的临界点判断
+		if(newTop <= 0){
+			newTop = 0;
+		}
+		if(newTop >= small.offsetHeight - move.offsetHeight){
+			newTop = small.offsetHeight - move.offsetHeight
+		}
+		move.style.left = newLeft + 'px';
+		move.style.top = newTop + 'px';
+
+
+		//左侧小图移动，右侧大图跟随移动
+		//左侧小图向右移动，右侧大图向左、向上移动
+
+		var newBigPicLeft = newLeft * bigPic.offsetWidth / small.offsetWidth;
+		var newBigPicTop = newTop * bigPic.offsetHeight / small.offsetHeight;
+
+		bigPic.style.left = - newBigPicLeft + 'px';
+		bigPic.style.top = - newBigPicTop + 'px';
+	}
+
+	//鼠标点击商品列表，大小图区域内显示对应的图片
+	for(var i=0;i<imgUrls.length;i++){
+		imgUrls[i].onmouseover = function(){
+			smallPic.src = this.src;
+			bigPic.src = this.src;
+		}
+	}
+</script>
+</html>
