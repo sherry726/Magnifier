@@ -1,6 +1,5 @@
 ## 放大镜：用于给用户提供一个查看商品详细信息的方式。界面、效果：左侧一个小图，鼠标悬浮移动，右侧显示对应位置的大图<br>
 ## 实现要点：<br>
-**
 1、设置小滑块move的移动事件,为了不让鼠标脱离move，就把移动事件作用在   move的父级元素small上<br>
    var newLeft = e.pageX - move.offsetWidth / 2 - show.offestLeft;<br>
    var newTop = e.pageY - move.offsetHeight / 2 - show.offsetTop;<br>
@@ -41,4 +40,3 @@
 
 7、定义商品列表,再定义商品列表各项的鼠标悬浮事件<br>
    鼠标悬浮在商品列表，大小图区域内显示对应的图片<br>
-**
